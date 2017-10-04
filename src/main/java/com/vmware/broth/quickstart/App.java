@@ -11,31 +11,35 @@ import java.util.concurrent.TimeUnit;
  */
 public class App 
 {
-	
-	 static void wait5Seconds() {
-	      try {
-	          Thread.sleep(5*1000);
-	      }
-	      catch(InterruptedException e) {}
-	 }
 	 
     @SuppressWarnings("unused")
 	public static void main( String[] args )
     {
     	int x;
+    	GaugeThread gt;
+    	
     	x=1;
         System.out.println( "Hello World!" );
         x=1;
         
-        MetricRegistry metrics = new MetricRegistry();
-    	Counter counter = metrics.counter("numbers1123");
-        counter.inc();
         //
+        // Instantiate a register. Its where all the metrics go
+        //
+        MetricRegistry metrics = new MetricRegistry();
+        //
+        //Create a counter. Easiest type of metric.
+        // Put it in a name space numbers1123.
+        //
+    	Counter counter = metrics.counter("numbers1123");
+    	// add one
+        counter.inc();
+        //Create a gauge
         WFIntegerGauge g = new WFIntegerGauge();
-        
+        // Register the gauge
         metrics.register("numbers1123.gauge", g);
         
         // Reporter-level point tags
+        // Set up all point tags.
         WavefrontReporter reporter = WavefrontReporter.forRegistry(metrics)
             .withSource("broths-home")
             .withPointTag("dc", "san-jose")
@@ -43,20 +47,20 @@ public class App
             .withJvmMetrics()
             .build("192.168.0.160", 2878);
 
+        // run it to report every 2 seconds/
         reporter.start(2, TimeUnit.SECONDS);
        
-        g.setValue((int)Math.random()*100);
-        wait5Seconds();
-        g.setValue((int)Math.random()*100);
-        counter.inc();
-        wait5Seconds();
-        counter.inc();
-        g.setValue((int)Math.random()*100);
-        wait5Seconds();
-        g.setValue((int)Math.random()*100);
-        counter.inc();
-        wait5Seconds();
-        x=2;
+        gt = new GaugeThread(g,2000);
+        gt.start();
+        try {
+			Thread.sleep(60000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        gt.interrupt();
+        
         
     }
 }
