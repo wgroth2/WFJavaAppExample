@@ -17,10 +17,9 @@ public class App
     {
     	int x;
     	GaugeThread gt;
+    	CounterThread ct;
     	
-    	x=1;
         System.out.println( "Hello World!" );
-        x=1;
         
         //
         // Instantiate a register. Its where all the metrics go
@@ -52,6 +51,8 @@ public class App
        
         gt = new GaugeThread(g,2000);
         gt.start();
+        ct = new CounterThread(counter,1500);
+        ct.start();
         try {
 			Thread.sleep(60000);
 		} catch (InterruptedException e) {
@@ -60,7 +61,7 @@ public class App
 		}
         
         gt.interrupt();
-        
+        ct.interrupt();
         
     }
 }
