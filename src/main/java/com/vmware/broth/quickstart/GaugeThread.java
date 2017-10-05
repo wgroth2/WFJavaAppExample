@@ -8,10 +8,15 @@ public class GaugeThread extends Thread {
     	cGauge = g;
     	cWaitMillis = millis;
     }
-    public void run(){
+    //
+    // Run method for thread.
+    //
+    public void run() {
+    	//
     	// get info for gauge
+    	//
     	int x;
-    	while(true) {
+    	while(!Thread.currentThread().isInterrupted()) {
     		Double d = Math.random() *100;
     		x = d.intValue();
     		System.out.println("setting guage to " + x);
@@ -19,7 +24,6 @@ public class GaugeThread extends Thread {
         	try {
     			sleep(cWaitMillis);
     		} catch (InterruptedException e) {
-    			// TODO Auto-generated catch block
     			System.out.println("Gauge update interrupted");
     		}
     	}
