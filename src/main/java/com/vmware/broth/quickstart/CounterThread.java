@@ -12,13 +12,15 @@ public class CounterThread extends Thread {
 	}
 	
 	public void run() {
-		gCounter.inc();
-		try {
-			sleep(gMillis);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Counter Sleep Interrupted");
+		while(!Thread.currentThread().isInterrupted()) {
+			gCounter.inc();
+			System.out.println("Counter Updated");
+			try {
+				sleep(gMillis);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Counter Sleep Interrupted");
+			}
 		}
-		
 	}
 }

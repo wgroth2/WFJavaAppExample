@@ -57,11 +57,11 @@ public class App
 			Thread.sleep(60000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("main sleep interrupted");
 		}
         
         gt.interrupt();
         ct.interrupt();
-        
+        System.exit(0);
     }
 }

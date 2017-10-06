@@ -16,8 +16,8 @@ public class GaugeThread extends Thread {
     	// get info for gauge
     	//
     	int x;
-    	while(!Thread.currentThread().isInterrupted()) {
-    		Double d = Math.random() *100;
+       	while(!this.isInterrupted()) {
+    	    		Double d = Math.random() *100;
     		x = d.intValue();
     		System.out.println("setting guage to " + x);
     		cGauge.setValue(x);
